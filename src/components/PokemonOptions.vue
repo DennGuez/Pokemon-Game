@@ -5,6 +5,7 @@
               v-for="pokemon in pokemons"
               :key="pokemon.id"
               @click="$emit('selection', pokemon.id)"
+              :class="!disable ? 'disabled' : ''"
               >
               {{ pokemon.name }}
             </li>
@@ -16,7 +17,10 @@
 import { toRef } from 'vue';
 import { Pokemon } from '../interfaces/Pokemon';
 
-const props = defineProps<{ pokemons: Pokemon[] }>()
+const props = defineProps<{ 
+    pokemons: Pokemon[] 
+    disable: boolean
+}>()
 const pokemons = toRef(props, 'pokemons')
 
 </script>
@@ -42,6 +46,12 @@ li:hover {
 .options-container {
     display: flex;
     justify-content: center;
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.6;
 }
 
 </style>

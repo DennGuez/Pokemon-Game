@@ -5,7 +5,10 @@
         <h3 v-if="!pokemon" >Espere por favor...</h3>
         <div v-else>
             <PokemonPicture :pokemon-id="pokemon.id" :show-pokemon="showPokemon" />
-            <PokemonOptions :pokemons="pokemonArr" @selection="checkAnswer(/*1,*/ $event)"/>
+           <PokemonOptions
+              :disable="disableLink"
+              :pokemons="pokemonArr"
+              @selection="checkAnswer(/*1,*/ $event)" />
 
             <template v-if="showAnswer" class="fade-in">
                 <h2>{{ message }}</h2>
@@ -28,6 +31,7 @@ const pokemon = ref<Pokemon>()
 const showPokemon = ref<boolean>(false)
 const showAnswer = ref<boolean>(false)
 const message = ref<string>('')
+const disableLink = ref(true)
 
 const mixPokemonArray = async() => {
     pokemonArr.value = await getPokemonsOptions()
@@ -42,6 +46,7 @@ onMounted(() => {
 })
 
 const checkAnswer = ( /*numero,*/ pokemonId: number) => {
+    disableLink.value = false
     showPokemon.value = true
     showAnswer.value = true
     if ( pokemonId === pokemon.value?.id ) {
@@ -58,6 +63,7 @@ const newGame = () => {
     showPokemon.value = false
     showAnswer.value = false
     message.value = ''
+    disableLink.value = true
     mixPokemonArray()
 }
 </script>
